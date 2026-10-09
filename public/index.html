@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Huellitas de Esperanza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ========== CABECERA ========== -->
+  <header class="cabecera">
+    <a href="#inicio" class="logo">
+      <span class="logo-icono">🐾</span>
+      <span class="logo-texto">Huellitas<em>de Esperanza</em></span>
+    </a>
+    <nav class="menu">
+      <a href="#inicio">Inicio</a>
+      <a href="#registrar">+ Reportar mascota</a>
+      <a href="#reportes">♡ Buscar mascotas</a>
+      <a href="#mapa-seccion">⌖ Mapa</a>
+      <button id="btn-sesion" class="btn-sesion" type="button">Ingresar</button>
+    </nav>
+  </header>
+
+  <main class="contenedor">
+    <!-- ========== PORTADA ========== -->
+    <section class="hero" id="inicio">
+      <div class="hero-texto">
+        <p class="antetitulo">Unidos por el amor a los animales</p>
+        <h1>Cada huellita merece <span>volver a casa.</span></h1>
+        <p class="hero-desc">Ayúdanos a reunir mascotas con sus familias. Un reporte puede convertirse en una historia de reencuentro.</p>
+        <div class="hero-botones">
+          <a href="#registrar" class="btn btn-verde">🐾 Reportar mascota</a>
+          <a href="#reportes" class="btn btn-borde">♡ Buscar mascotas</a>
+        </div>
+        <p class="hero-nota">💚 Una comunidad que cuida, busca y nunca deja de tener esperanza.</p>
+      </div>
+      <div class="hero-ilustracion" aria-hidden="true">
+        <span class="huella-flotante">🐾</span>
+        <div class="circulo circulo-verde"><span>🐕</span></div>
+        <div class="circulo circulo-rosa"><span>🐈</span></div>
+        <div class="hero-badge">♥ Cada vida<br />es importante</div>
+      </div>
+    </section>
+
+    <!-- ========== PASOS ========== -->
+    <section class="pasos">
+      <div class="paso"><span class="paso-icono verde">📷</span><h3>1. Registra</h3><p>Comparte una foto y los datos de la mascota.</p></div>
+      <div class="paso"><span class="paso-icono rosa">📍</span><h3>2. Ubica</h3><p>Marca en el mapa dónde la viste.</p></div>
+      <div class="paso"><span class="paso-icono amarillo">🐾</span><h3>3. Comparte</h3><p>Ayuda a que más personas puedan encontrarla.</p></div>
+      <div class="paso"><span class="paso-icono morado">💗</span><h3>4. Reencuentra</h3><p>Contribuye a que vuelva con su familia.</p></div>
+    </section>
+
+    <!-- ========== INGRESO / REGISTRO (JWT) ========== -->
+    <section class="tarjeta" id="panel-auth" hidden>
+      <div class="titulo-seccion">
+        <span class="titulo-icono">🔐</span>
+        <div>
+          <p class="antetitulo">Tu cuenta</p>
+          <h2 id="titulo-auth">Ingresar</h2>
+          <p class="subtitulo">Necesitas una cuenta para publicar o eliminar reportes.</p>
+        </div>
+      </div>
+      <form id="form-auth" class="formulario" novalidate>
+        <div class="grilla-2">
+          <label id="campo-nombre" hidden>Nombre *<input name="nombre" autocomplete="name" placeholder="Tu nombre" /></label>
+          <label>Correo *<input name="email" type="email" autocomplete="email" placeholder="correo@ejemplo.com" /></label>
+          <label>Contraseña *<input name="password" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres" /></label>
+        </div>
+        <button type="submit" class="btn btn-verde btn-ancho" id="btn-auth">Ingresar →</button>
+        <button type="button" class="btn-enlace" id="cambiar-auth">¿No tienes cuenta? Regístrate</button>
+      </form>
+    </section>
+
+    <!-- ========== REGISTRAR MASCOTA ========== -->
+    <section class="tarjeta" id="registrar">
+      <div class="titulo-seccion">
+        <span class="titulo-icono">🐾</span>
+        <div>
+          <p class="antetitulo">Ayúdanos a ayudar</p>
+          <h2>Registrar una mascota</h2>
+          <p class="subtitulo">Completa la información para publicar un nuevo reporte.</p>
+        </div>
+      </div>
+
+      <form id="form-mascota" class="formulario" novalidate>
+        <div class="grilla-2">
+          <label>Tipo de reporte *
+            <select name="tipoReporte" required>
+              <option value="">Selecciona una opción</option>
+              <option>Perdida</option>
+              <option>Encontrada</option>
+            </select>
+          </label>
+          <label>Nombre de la mascota *<input name="nombre" required maxlength="100" placeholder="Ej. Max" /></label>
+          <label>Especie *
+            <select name="especie" required>
+              <option value="">Selecciona</option>
+              <option>Perro</option>
+              <option>Gato</option>
+              <option>Conejo</option>
+              <option>Otro</option>
+            </select>
+          </label>
+          <label>Barrio o dirección aproximada *<input name="ubicacion" required maxlength="100" placeholder="Ej. Chapinero, Bogotá" /></label>
+          <label>Color<input name="color" maxlength="100" placeholder="Ej. Café" /></label>
+          <label>Raza<input name="raza" maxlength="100" placeholder="Ej. Criollo" /></label>
+          <label>Fecha<input name="fecha" type="date" /></label>
+          <label>Teléfono de contacto *<input name="telefono" type="tel" required placeholder="Número de contacto" /></label>
+        </div>
+
+        <label>Descripción de la mascota *
+          <textarea name="descripcion" required maxlength="500" rows="3" placeholder="Color, raza, tamaño y características especiales."></textarea>
+        </label>
+
+        <div class="campo">
+          <span class="etiqueta-campo">Fotografía de la mascota *</span>
+          <div class="caja-foto">
+            <span class="foto-icono">📷</span>
+            <div>
+              <strong>Una imagen puede hacer la diferencia</strong>
+              <p>Selecciona una fotografía JPG, PNG o WEBP de máximo 5 MB.</p>
+              <label class="btn-archivo">Seleccionar archivo
+                <input type="file" name="foto" accept="image/jpeg,image/png,image/webp" hidden />
+              </label>
+              <span id="nombre-archivo" class="nota">Sin archivos seleccionados</span>
+            </div>
+            <img id="vista-previa" alt="Vista previa" hidden />
+          </div>
+        </div>
+
+        <div class="campo">
+          <span class="etiqueta-campo">¿Dónde fue vista la mascota? *</span>
+          <p class="nota">Haz clic en el mapa para seleccionar la ubicación aproximada.</p>
+          <div id="mapa-form" class="mapa mapa-form"></div>
+          <p class="nota" id="coordenadas">Aún no has seleccionado una ubicación.</p>
+          <input type="hidden" name="latitud" />
+          <input type="hidden" name="longitud" />
+        </div>
+
+        <button type="submit" class="btn btn-verde btn-ancho">Publicar reporte →</button>
+      </form>
+    </section>
+
+    <!-- ========== MAPA DE REPORTES ========== -->
+    <section class="tarjeta" id="mapa-seccion">
+      <div class="titulo-seccion">
+        <span class="titulo-icono rosa">📍</span>
+        <div>
+          <p class="antetitulo">Encontrémoslos cerca de ti</p>
+          <h2>Mapa de reportes</h2>
+          <p class="subtitulo">Consulta los puntos donde se han reportado mascotas.</p>
+        </div>
+      </div>
+      <div id="mapa-reportes" class="mapa"></div>
+      <div class="leyenda">
+        <span><i class="punto rojo"></i> Mascota perdida</span>
+        <span><i class="punto morado"></i> Mascota encontrada</span>
+      </div>
+    </section>
+
+    <!-- ========== BUSCADOR ========== -->
+    <section class="tarjeta" id="reportes">
+      <div class="titulo-seccion con-accion">
+        <span class="titulo-icono rosa">♡</span>
+        <div>
+          <p class="antetitulo">Cada reporte cuenta</p>
+          <h2>Mascotas reportadas</h2>
+          <p class="subtitulo">Conoce sus historias y ayuda a compartirlas.</p>
+        </div>
+        <a href="#registrar" class="btn-pildora">+ Nuevo reporte</a>
+      </div>
+      <div class="buscador">
+        <span>🔍</span>
+        <input id="buscar" type="search" placeholder="Buscar por nombre, especie o ubicación" />
+        <select id="filtro-tipo">
+          <option value="">Todos</option>
+          <option>Perdida</option>
+          <option>Encontrada</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="banner">
+      <span class="banner-icono">🐾</span>
+      <div>
+        <strong>Tu ayuda puede cambiar una historia</strong>
+        <p>Comparte los reportes con tu comunidad. Juntos podemos lograr más reencuentros.</p>
+      </div>
+      <a href="#lista" class="btn-pildora">Ver reportes →</a>
+    </section>
+
+    <section>
+      <h2 class="titulo-lista">Mascotas reportadas</h2>
+      <p class="resumen" id="resumen">Cargando...</p>
+      <div id="lista" class="lista"></div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="logo">
+      <span class="logo-icono">🐾</span>
+      <span class="logo-texto pequeno">Huellitas<em>de Esperanza</em></span>
+    </div>
+    <p class="pie-frase">Porque toda mascota merece volver a casa. ♥</p>
+    <p class="pie-credito">Huellitas de Esperanza · Proyecto académico</p>
+  </footer>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
